@@ -51,7 +51,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/input_design"
         android:hint="Product Price"
-        android:inputType="textMultiLine"
+        android:inputType="number"
         android:padding="10dp" />
 
     <Button
@@ -64,8 +64,8 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/button"
         android:text="Add Product"
-        android:textColor="@color/colorWhite"
         android:textAllCaps="false"
-        android:textSize="20dp"/>
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp" />
 
 </RelativeLayout>
