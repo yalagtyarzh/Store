@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.CarActivity"
+    android:background="@android:color/white">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carousel"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:fillColor="#FFFFFFFF"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:padding="10dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="2014 Toyota Vitz"/>
+
+            <TextView
+                android:id="@+id/description_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@color/primaryText"
+                android:textStyle="bold"
+                android:layout_below="@id/title"
+                android:layout_marginTop="10dp"
+                android:text="Description"/>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description_title"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/secondaryText"
+                android:textSize="15sp"
+                android:text="@string/sample_description"/>
+
+            <TextView
+                android:id="@+id/details_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@color/primaryText"
+                android:textStyle="bold"
+                android:layout_below="@id/description"
+                android:layout_marginTop="15dp"
+                android:text="Car details"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detailsRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_title"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_details" />
+
+            <TextView
+                android:id="@+id/features_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@color/primaryText"
+                android:textStyle="bold"
+                android:layout_below="@id/detailsRv"
+                android:layout_marginTop="15dp"
+                android:text="Features"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/featuresRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/features_title"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_features" />
+
+            <TextView
+                android:id="@+id/seller_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="@color/primaryText"
+                android:textStyle="bold"
+                android:layout_below="@id/featuresRv"
+                android:layout_marginTop="15dp"
+                android:text="Seller details"/>
+
+            <TextView
+                android:id="@+id/sellerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryText"
+                android:drawablePadding="10dp"
+                android:layout_below="@id/seller_title"
+                android:text="Samtonic Motors"/>
+
+            <TextView
+                android:id="@+id/sellerPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryText"
+                android:drawablePadding="10dp"
+                android:layout_below="@id/sellerName"
+                android:text="0726002063"/>
+
+            <TextView
+                android:id="@+id/sellerLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryText"
+                android:drawablePadding="10dp"
+                android:layout_below="@id/sellerPhone"
+                android:text="Gigiri, Nairobi, Kenya"/>
+
+            <TextView
+                android:id="@+id/sellerEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryText"
+                android:drawablePadding="10dp"
+                android:layout_below="@id/sellerLocation"
+                android:text="info@samtonic.co.ke"/>
+
+            <Button
+                android:id="@+id/delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sellerEmail"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/rounded_orange_button"
+                android:textColor="@color/white"
+                android:text="Delete car"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/testDrive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sellerEmail"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/rounded_button"
+                android:textColor="@color/white"
+                android:text="Book Test Drive"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/contactSeller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/testDrive"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/wire_button"
+                android:textColor="@color/colorPrimary"
+                android:text="Contact seller"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

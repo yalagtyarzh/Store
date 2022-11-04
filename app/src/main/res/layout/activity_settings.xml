@@ -4,92 +4,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Users.SettingsActivity">
+    tools:context=".activities.SettingsActivity"
+    android:background="@color/light_background">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_settings"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        style="?android:actionBarStyle"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_settings"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="@string/notifications"
+                android:layout_marginStart="5dp"
+                android:textStyle="bold"
+                android:padding="@dimen/settings_header_padding"/>
 
-                <TextView
-                    android:id="@+id/close_settings_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="Close"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settings_padding"
+                android:id="@+id/notifications"
+                android:text="@string/notifications"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"/>
 
-                <TextView
-                    android:id="@+id/save_settings_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="20dp"
-                    android:text="Save"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settings_padding"
+                android:id="@+id/news"
+                android:text="@string/news_and_updates"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"/>
 
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/general"
+                android:layout_marginStart="5dp"
+                android:textStyle="bold"
+                android:padding="@dimen/settings_header_padding"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/settings_account_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/app_bar_settings"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/profile" />
 
-    <EditText
-        android:id="@+id/settings_fullname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_account_image"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/input_design"
-        android:hint="Your name"
-        android:padding="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:onClick="onClick"
+                android:id="@+id/about"
+                style="@style/SettingsTile"/>
 
-    <EditText
-        android:id="@+id/settings_phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_fullname"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/input_design"
-        android:hint="Your phone"
-        android:padding="10dp" />
 
-    <EditText
-        android:id="@+id/settings_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings_phone"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/input_design"
-        android:hint="Your address"
-        android:padding="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/terms_of_use"
+                android:onClick="onClick"
+                android:id="@+id/terms"
+                style="@style/SettingsTile"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/privacy_policy"
+                android:id="@+id/privacy"
+                android:onClick="onClick"
+                style="@style/SettingsTile"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_app"
+                android:id="@+id/rate"
+                android:onClick="onClick"
+                style="@style/SettingsTile"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send_feedback"
+                android:id="@+id/feedback"
+                android:onClick="onClick"
+                style="@style/SettingsTile"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:id="@+id/exit"
+                android:onClick="onClick"
+                style="@style/SettingsTile"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
 </RelativeLayout>
