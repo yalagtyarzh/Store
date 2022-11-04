@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.store.R;
-import com.example.store.Users.LoginActivity;
-import com.example.store.Users.RegisterActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +33,7 @@ import java.util.HashMap;
 
 public class AdminAddNewProductActivity extends AppCompatActivity {
 
-    private String categoryName, Description, Price, ProductName, saveCurrentDate, saveCurrentTime, productRandomKey;
+    private String categoryName, Description, Price, Pname, saveCurrentDate, saveCurrentTime, productRandomKey;
     private String downloadImageUrl;
     private ImageView productImage;
     private EditText productName, productDescription, productPrice;
@@ -55,14 +53,14 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 OpenGallery();
             }
         });
 
         addNewProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 ValidateProductData();
             }
         });
@@ -71,38 +69,32 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
     private void ValidateProductData() {
         Description = productDescription.getText().toString();
         Price = productPrice.getText().toString();
-        ProductName = productName.getText().toString();
-        
-        if (ImageUri == null) {
-            Toast.makeText(this, "Add product image", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Pname = productName.getText().toString();
 
-        if (TextUtils.isEmpty(Description)) {
-            Toast.makeText(this, "Add product description", Toast.LENGTH_SHORT).show();
-            return;
+        if(ImageUri == null){
+            Toast.makeText(this, "Need image.", Toast.LENGTH_SHORT).show();
         }
-
-        if (TextUtils.isEmpty(Price)) {
-            Toast.makeText(this, "Add product price", Toast.LENGTH_SHORT).show();
-            return;
+        else if(TextUtils.isEmpty(Description)){
+            Toast.makeText(this, "Need description.", Toast.LENGTH_SHORT).show();
         }
-
-        if (TextUtils.isEmpty(ProductName)) {
-            Toast.makeText(this, "Add product name", Toast.LENGTH_SHORT).show();
-            return;
+        else if(TextUtils.isEmpty(Price)){
+            Toast.makeText(this, "Need price.", Toast.LENGTH_SHORT).show();
         }
-        
-        StoreProductInformation();
-        loadingBar.dismiss();
+        else if(TextUtils.isEmpty(Pname)){
+            Toast.makeText(this, "Need name.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            StoreProductInformation();
+        }
     }
 
     private void StoreProductInformation() {
 
         loadingBar.setTitle("Loading data");
-        loadingBar.setMessage("Please, wait");
+        loadingBar.setMessage("Please wait...");
         loadingBar.setCanceledOnTouchOutside(false);
         loadingBar.show();
+
         Calendar calendar = Calendar.getInstance();
 
         SimpleDateFormat currentDate = new SimpleDateFormat("ddMMyyyy");
@@ -113,7 +105,7 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
 
         productRandomKey = saveCurrentDate + saveCurrentTime;
 
-        StorageReference filePath = ProductImageRef.child(ImageUri.getLastPathSegment() + productRandomKey + ".jpg");
+        final StorageReference filePath = ProductImageRef.child(ImageUri.getLastPathSegment() + productRandomKey + ".jpg");
 
         final UploadTask uploadTask = filePath.putFile(ImageUri);
 
@@ -121,17 +113,18 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 String message = e.toString();
-                Toast.makeText(AdminAddNewProductActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAddNewProductActivity.this, "Ошибка: " + message, Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(AdminAddNewProductActivity.this, "Image loaded successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAddNewProductActivity.this, "Изображение успешно загружено.", Toast.LENGTH_SHORT).show();
 
-                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if(!task.isSuccessful()) {
+                        if(!task.isSuccessful()){
                             throw task.getException();
                         }
                         downloadImageUrl = filePath.getDownloadUrl().toString();
@@ -140,57 +133,65 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminAddNewProductActivity.this, "Image saved", Toast.LENGTH_SHORT).show();
+                        if(task.isSuccessful()){
+                            downloadImageUrl = task.getResult().toString();
+
+                            Toast.makeText(AdminAddNewProductActivity.this, "Фото сохранено", Toast.LENGTH_SHORT).show();
 
                             SaveProductInfoToDatabase();
                         }
                     }
                 });
             }
+        });
+    }
 
-            private void SaveProductInfoToDatabase() {
-                HashMap<String, Object> productMap = new HashMap<>();
+    private void SaveProductInfoToDatabase() {
+        HashMap<String, Object> productMap = new HashMap<>();
 
-                productMap.put("pid", productRandomKey);
-                productMap.put("date", saveCurrentDate);
-                productMap.put("time", saveCurrentTime);
-                productMap.put("description", Description);
-                productMap.put("image", downloadImageUrl);
-                productMap.put("category", categoryName);
-                productMap.put("price", Price);
-                productMap.put("product_name", ProductName);
+        productMap.put("pid", productRandomKey);
+        productMap.put("date", saveCurrentDate);
+        productMap.put("time", saveCurrentTime);
+        productMap.put("description", Description);
+        productMap.put("image", downloadImageUrl);
+        productMap.put("category", categoryName);
+        productMap.put("price", Price);
+        productMap.put("pname", Pname);
 
-                ProductsRef.child(productRandomKey).updateChildren(productMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        ProductsRef.child(productRandomKey).updateChildren(productMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(AdminAddNewProductActivity.this, "Product added", Toast.LENGTH_SHORT).show();
+                        if(task.isSuccessful()){
+
+                            loadingBar.dismiss();
+                            Toast.makeText(AdminAddNewProductActivity.this, "Good added", Toast.LENGTH_SHORT).show();
 
                             Intent loginIntent = new Intent(AdminAddNewProductActivity.this, AdminCategoryActivity.class);
                             startActivity(loginIntent);
-                            return;
                         }
+                        else {
+                            String message = task.getException().toString();
+                            Toast.makeText(AdminAddNewProductActivity.this, "Error: "+ message, Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
 
-                        String message = task.getException().toString();
-                        Toast.makeText(AdminAddNewProductActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-            }
-        });
     }
 
     private void OpenGallery() {
         Intent galleryIntent = new Intent();
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
         galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GALLERYPICK);
+        startActivityForResult(galleryIntent,GALLERYPICK);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERYPICK && resultCode == RESULT_OK && data != null) {
+
+        if(requestCode == GALLERYPICK && resultCode == RESULT_OK && data != null){
             ImageUri = data.getData();
             productImage.setImageURI(ImageUri);
         }
@@ -206,5 +207,6 @@ public class AdminAddNewProductActivity extends AppCompatActivity {
         ProductImageRef = FirebaseStorage.getInstance().getReference().child("Product Images");
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
         loadingBar = new ProgressDialog(this);
+
     }
 }
