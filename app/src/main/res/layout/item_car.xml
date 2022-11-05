@@ -69,7 +69,7 @@
                     android:textSize="@dimen/username"
                     android:textColor="@android:color/black"
                     android:text="@{data.sellerName}"
-                    tools:text="Vincent Tirgei"/>
+                    tools:text="Shtanko Dmitry"/>
 
                 <TextView
                     android:id="@+id/postTime"
@@ -129,7 +129,7 @@
             android:textColor="@{data.sold ? @color/red : @color/primaryText}"
             android:textSize="@dimen/username"
             android:text="@{data.sold ? `SOLD` : `KES ` + data.price}"
-            tools:text="KES 700000"/>
+            tools:text="10000 $"/>
 
         <TextView
             android:id="@+id/features"
