@@ -49,40 +49,11 @@ class NotificationsFragment : BaseFragment() {
 
     private fun loadSample() {
         val notif1 = Notification()
-        notif1.actionType = "Test drive"
-        notif1.summary = "Mike Otis has booked a test drive for Friday"
+        notif1.actionType = "Welcome"
+        notif1.summary = "Welcome"
         notif1.time = System.currentTimeMillis()
         notif1.avatar = R.drawable.person
         notificationsAdapter.addNotif(notif1)
-
-        val notif2 = Notification()
-        notif2.actionType = "Spare part"
-        notif2.summary = "William Ole Tipis placed an order for 2 rear windows"
-        notif2.time = System.currentTimeMillis()
-        notif2.avatar = R.drawable.person
-        notificationsAdapter.addNotif(notif2)
-
-        val notif3 = Notification()
-        notif3.actionType = "Test drive"
-        notif3.summary = "Caroline Nduta has booked a test drive for Saturday"
-        notif3.time = System.currentTimeMillis()
-        notif3.avatar = R.drawable.person
-        notificationsAdapter.addNotif(notif3)
-
-        val notif4 = Notification()
-        notif4.actionType = "Test drive"
-        notif4.summary = "Jacqueline Amondi has booked a test drive for Wednesday"
-        notif4.time = System.currentTimeMillis()
-        notif4.avatar = R.drawable.person
-        notificationsAdapter.addNotif(notif4)
-
-        val notif5 = Notification()
-        notif5.actionType = "Spare part"
-        notif5.summary = "Ngigi Spare parts has comfirmed your order for 3 disc brakes"
-        notif5.time = System.currentTimeMillis()
-        notif5.avatar = R.drawable.person
-        notificationsAdapter.addNotif(notif5)
-
     }
 
 }

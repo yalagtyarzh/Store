@@ -21,6 +21,7 @@ import com.example.store.adapters.FeaturesAdapter
 import com.example.store.commoners.AppUtils
 import com.example.store.commoners.BaseActivity
 import com.example.store.commoners.K
+import com.example.store.models.Booking
 import com.example.store.models.Car
 import com.example.store.utils.*
 import com.google.gson.Gson
@@ -37,7 +38,8 @@ import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
-class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+class CarActivity : BaseActivity(), ImageListener, View.OnClickListener,
+    DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private lateinit var car: Car
     private lateinit var featuresAdapter: FeaturesAdapter
     private lateinit var detailsAdapter: DetailsAdapter
@@ -80,19 +82,59 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
         testDrive.setOnClickListener(this)
         delete.setOnClickListener(this)
 
-        sellerName.setDrawable(AppUtils.setDrawable(this, FontAwesome.Icon.faw_user2, R.color.secondaryText, 15))
-        sellerPhone.setDrawable(AppUtils.setDrawable(this, Ionicons.Icon.ion_android_call, R.color.secondaryText, 15))
-        sellerLocation.setDrawable(AppUtils.setDrawable(this, Ionicons.Icon.ion_location, R.color.secondaryText, 15))
-        sellerEmail.setDrawable(AppUtils.setDrawable(this, Ionicons.Icon.ion_email, R.color.secondaryText, 15))
+        sellerName.setDrawable(
+            AppUtils.setDrawable(
+                this,
+                FontAwesome.Icon.faw_user2,
+                R.color.secondaryText,
+                15
+            )
+        )
+        sellerPhone.setDrawable(
+            AppUtils.setDrawable(
+                this,
+                Ionicons.Icon.ion_android_call,
+                R.color.secondaryText,
+                15
+            )
+        )
+        sellerLocation.setDrawable(
+            AppUtils.setDrawable(
+                this,
+                Ionicons.Icon.ion_location,
+                R.color.secondaryText,
+                15
+            )
+        )
+        sellerEmail.setDrawable(
+            AppUtils.setDrawable(
+                this,
+                Ionicons.Icon.ion_email,
+                R.color.secondaryText,
+                15
+            )
+        )
 
         val cal = Calendar.getInstance()
-        datePicker = DatePickerDialog(this, this, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
-        timePicker = TimePickerDialog(this, this, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+        datePicker = DatePickerDialog(
+            this,
+            this,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        )
+        timePicker = TimePickerDialog(
+            this,
+            this,
+            cal.get(Calendar.HOUR_OF_DAY),
+            cal.get(Calendar.MINUTE),
+            true
+        )
     }
 
     private fun toolbarTitle() {
         toolbarLayout.title = ""
-        appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+        appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             var showTitle = true
             var scrollRange = -1
 
@@ -142,7 +184,7 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
     override fun setImageForPosition(position: Int, imageView: ImageView?) {
         val keys = car.images.keys.toList()
 
-        imageView!!.scaleType =ImageView.ScaleType.CENTER_CROP
+        imageView!!.scaleType = ImageView.ScaleType.CENTER_CROP
         imageView.loadUrl(car.images[keys[position]]!!)
     }
 
@@ -161,15 +203,15 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-                android.R.id.home -> onBackPressed()
+        when (item?.itemId) {
+            android.R.id.home -> onBackPressed()
         }
 
         return true
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.contactSeller -> {
                 val i = Intent(this, ChatActivity::class.java)
                 i.putExtra(K.MY_ID, getUid())
@@ -180,7 +222,7 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
             }
 
             R.id.testDrive -> {
-                alert ("Book test drive?") {
+                alert("Book test drive?") {
                     positiveButton("BOOK") {
                         datePicker.show()
                     }
@@ -194,11 +236,11 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
                     positiveButton("DELETE") {
 
                         getFirestore().collection(K.CARS).document(car.id!!).delete()
-                                .addOnSuccessListener {
-                                    toast("${car.make} ${car.model} deleted")
-                                    finish()
-                                    AppUtils.animateEnterLeft(this@CarActivity)
-                                }
+                            .addOnSuccessListener {
+                                toast("${car.make} ${car.model} deleted")
+                                finish()
+                                AppUtils.animateEnterLeft(this@CarActivity)
+                            }
                     }
                     negativeButton("CANCEL") {}
                 }.show()
@@ -220,79 +262,53 @@ class CarActivity : BaseActivity(), ImageListener, View.OnClickListener, DatePic
     }
 
     private fun bookTestDrive() {
-        bookingView = layoutInflater.inflate(R.layout.make_booking,null,false)
+        bookingView = layoutInflater.inflate(R.layout.make_booking, null, false)
         bookDate = bookingView.findViewById(R.id.orderDate)
         bookTime = bookingView.findViewById(R.id.orderTime)
         bookDate.setText(datePicked)
         bookTime.setText(timePicked)
 
-        AlertDialog.Builder(this).setTitle("Book test drive").setView(bookingView).setPositiveButton("BOOK") { x, y->
-            book()
-            //makeOrder(quantity.text.toString(),location.text.toString())
-        }.setNegativeButton("CANCEL",null).create().show()
+        AlertDialog.Builder(this).setTitle("Book test drive").setView(bookingView)
+            .setPositiveButton("BOOK") { x, y ->
+                book()
+                //makeOrder(quantity.text.toString(),location.text.toString())
+            }.setNegativeButton("CANCEL", null).create().show()
     }
 
     private fun book() {
-        showLoading("Booking test drive...")
-        val client = OkHttpClient()
+        val ref = getFirestore().collection(K.CARS).document(car.id.toString())
+        ref.get().addOnSuccessListener { doc ->
+            if (doc == null) {
+                alert("Product does not exist", "Failed").show()
+            } else {
+                val snapshot = doc.toObject(Car::class.java)
+                val booking = Booking()
+                val bookerID = getUid()
+                booking.id = bookerID + car.id
+                booking.name = "${car.make} ${car.model}"
+                booking.bookerId = bookerID
+                booking.bookerName = prefs[K.NAME]
+                booking.sellerId = car.sellerId
+                booking.sellerName = car.sellerName
+                booking.dateBooked = datePicked
+                booking.timeBooked = timePicked
+                booking.image = car.image
 
-        val urlBuilder = HttpUrl.parse(K.BOOK_TEST_DRIVE_URL)?.newBuilder()
-        urlBuilder?.addQueryParameter("car_id", car.id)
-        urlBuilder?.addQueryParameter("car_name", "${car.make} ${car.model}")
-        urlBuilder?.addQueryParameter("booker_id", getUid())
-        urlBuilder?.addQueryParameter("booker_name", prefs[K.NAME])
-        urlBuilder?.addQueryParameter("seller_id", car.sellerId)
-        urlBuilder?.addQueryParameter("seller_name", car.sellerName)
-        urlBuilder?.addQueryParameter("date_booked", datePicked)
-        urlBuilder?.addQueryParameter("time_booked", timePicked)
-        urlBuilder?.addQueryParameter("image_url", car.image)
-        urlBuilder?.addQueryParameter("time", System.currentTimeMillis().toString())
+                getDatabaseReference().child("bookings").child(car.sellerId.toString()).child(car.id.toString()).setValue(booking)
+                getDatabaseReference().child("test-drives").child(bookerID).child(booking.id.toString()).setValue(booking)
 
-        val url = urlBuilder?.build().toString()
-        val request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call?, e: IOException?) {
-                e?.printStackTrace()
-                runOnUiThread {
-                    hideLoading()
-                    toast("Error making order. Please try again")
-                }
+                alert("Booking created succesfully", "Success!").show()
             }
-
-            override fun onResponse(call: Call?, response: Response?) {
-                runOnUiThread {
-                    hideLoading()
-                }
-
-                val res = response?.body()?.string()
-                Timber.e("RESULTS: $res")
-                if (response!!.isSuccessful) {
-                    try {
-                        val gson = Gson()
-                        val json = gson.fromJson(res, JsonObject::class.java)
-                        val resultCode = json["resultCode"].asInt
-                        runOnUiThread {
-                            when(resultCode){
-                                -1 -> {
-                                    alert(json["description"].asString, "Failed").show()
-                                }
-                                0 -> {
-                                    alert(json["description"].asString, "Success").show()
-                                }
-                            }
-                        }
-                    }catch (e:Exception){}
-                }
-            }
-        })
+        }.addOnFailureListener {
+            hideLoading()
+            toast("Error uploading order. Please try again")
+        }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         AppUtils.animateEnterLeft(this)
     }
-
 
 
 }

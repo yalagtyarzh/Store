@@ -56,6 +56,7 @@ class SalesActivity : BaseActivity(), SmoothDateRangePickerFragment.OnDateRangeS
         showLoading("Loading records...")
         Handler().postDelayed({hideLoading()}, 2000)
 
+        // TODO: retrieve data from firebase
         totalSales()
         carSalesBar()
         partSales()
@@ -68,7 +69,7 @@ class SalesActivity : BaseActivity(), SmoothDateRangePickerFragment.OnDateRangeS
         supportActionBar?.title = "Sales Reports"
 
         dateFilter.setImageDrawable(setDrawable(this, Ionicons.Icon.ion_android_calendar, R.color.textGray, 27))
-        date.text = "Report for: Jan 01, 2018 - ${TimeFormatter().getReportTime(System.currentTimeMillis())}"
+        date.text = "Report for: Jan 01, 2022 - ${TimeFormatter().getReportTime(System.currentTimeMillis())}"
         dateFilter.hideView()
 
         dateRangePicker = SmoothDateRangePickerFragment.newInstance(this)
@@ -202,7 +203,7 @@ class SalesActivity : BaseActivity(), SmoothDateRangePickerFragment.OnDateRangeS
             carmonth.set(carmonth.size, months[i])
         }
 
-        //loadData()
+        loadData()
     }
 
     private fun loadData() {
