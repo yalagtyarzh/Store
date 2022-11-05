@@ -14,7 +14,6 @@ object K {
     const val REQUESTS = "requests"
     const val BOOKINGS = "bookings"
     const val TEST_DRIVES = "test-drives"
-    const val BOOK_TEST_DRIVE_URL = "https://us-central1-automart-36ac2.cloudfunctions.net/bookTestDrive"
     const val REPORTS_URL = "https://us-central1-automart-36ac2.cloudfunctions.net/getReports"
 
     // Chats
